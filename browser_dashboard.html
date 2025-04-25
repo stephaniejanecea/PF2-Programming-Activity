@@ -1,0 +1,132 @@
+<!-- 
+  browser_dashboard.html
+  A Browser Environment Dashboard displaying browser, screen, and navigation data.
+  Author: Juan Dela Cruz
+  For PF2 - Event-Driven Programming
+  2nd Semester AY 2024–2025
+-->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Browser Environment Dashboard</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      padding: 20px;
+      transition: background-color 0.3s;
+    }
+    header {
+      background-color: #FFFFFF;
+      border-left: 5px solid #34495e;
+      padding: 15px;
+      margin-bottom: 20px;
+    }
+    section {
+      margin-bottom: 20px;
+    }
+    h2 {
+      color: #2c3e50;
+      border-bottom: 2px solid #ccc;
+    }
+    .info-box {
+      padding: 10px;
+      background: #ecf0f1;
+      border-radius: 5px;
+      margin-top: 10px;
+    }
+    button {
+      margin-right: 10px;
+      margin-top: 10px;
+      padding: 8px 12px;
+      border: none;
+      background: #3498db;
+      color: white;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+    button:hover {
+      background: #2980b9;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>Browser Environment Dashboard</h1>
+    <p><strong>Complete Name:</strong> Stephanie Jane B. Cea </p>
+    <p><strong>Sex:</strong> Female </p>
+    <p><strong>Address:</strong> Zone 5, Matacla, Goa, Camarines Sur </p>
+    <p><strong>Course:</strong> BSIT, 2nd Year, Section A</p>
+    <p><strong>School:</strong> Partido State University </p>
+    <p><strong>Semester:</strong> 2nd Semester, AY 2024–2025</p>
+    <p><strong>Subject:</strong> PF2 - Event-Driven Programming</p>
+    <p><strong>Instructor:</strong> Arjay F. Abio </p>
+  </header>
+
+  <section>
+    <h2>Browser Information</h2>
+    <div class="info-box" id="browserInfo"></div>
+  </section>
+
+  <section>
+    <h2>Page Information and Controls</h2>
+    <div class="info-box">
+      <p><strong>URL:</strong> <span id="url"></span></p>
+      <p><strong>Hostname:</strong> <span id="hostname"></span></p>
+      <p><strong>Title:</strong> <span id="titleDisplay"></span></p>
+      <button onclick="changeTitle()">Change Page Title</button>
+    </div>
+  </section>
+
+  <section>
+    <h2>Navigation Controls</h2>
+    <button onclick="window.location.reload()">Reload Page</button>
+    <button onclick="window.location.href='https://www.example.com'">Go to Example.com</button>
+    <button onclick="history.back()">Back</button>
+    <button onclick="history.forward()">Forward</button>
+  </section>
+
+  <script>
+    // Part A: Browser Info
+    const browserInfoDiv = document.getElementById('browserInfo');
+    browserInfoDiv.innerHTML = `
+      <p><strong>Browser:</strong> ${navigator.appName} ${navigator.appVersion}</p>
+      <p><strong>Platform:</strong> ${navigator.platform}</p>
+      <p><strong>Java Enabled:</strong> ${navigator.javaEnabled()}</p>
+      <p><strong>Screen Resolution:</strong> ${screen.width} x ${screen.height}</p>
+      <p><strong>Available Screen Size:</strong> ${screen.availWidth} x ${screen.availHeight}</p>
+      <p><strong>Color Depth:</strong> ${screen.colorDepth} bits</p>
+    `;
+
+    // Part B: Page Info
+    document.getElementById('url').textContent = window.location.href;
+    document.getElementById('hostname').textContent = window.location.hostname;
+    document.getElementById('titleDisplay').textContent = document.title;
+
+    function changeTitle() {
+      const newTitle = prompt("Enter new page title:");
+      if (newTitle) {
+        document.title = newTitle;
+        document.getElementById('titleDisplay').textContent = newTitle;
+      }
+    }
+
+    // Part D: Dynamic Background based on screen width
+    function setBackgroundColor() {
+      const width = screen.width;
+      if (width < 600) {
+        document.body.style.backgroundColor = 'blue';
+      } else if (width >= 600 && width <= 991) {
+        document.body.style.backgroundColor = 'green';
+      } else {
+        document.body.style.backgroundColor = 'orange';
+      }
+    }
+
+    // Trigger background change on load and resize
+    setBackgroundColor();
+    window.addEventListener('resize', setBackgroundColor);
+  </script>
+</body>
+</html>

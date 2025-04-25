@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Word Guessing Game</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      padding: 20px;
+      text-align: center;
+    }
+    #feedback {
+      margin-top: 20px;
+      font-weight: bold;
+    }
+    #hint {
+      margin: 10px 0;
+      color: darkblue;
+    }
+    .win {
+      color: green;
+    }
+    .lose {
+      color: red;
+    }
+  </style>
+</head>
+<body>
+  <h1>Word Guessing Game</h1>
+  <p><strong>Name:</strong> STEPHANIE JANE CEA </p>
+  <p><strong>Course:</strong> BSIT-2A</p>
+  <input type="text" id="guessInput" placeholder="Enter your guess" />
+  <button id="submitBtn">Submit Guess</button>
+  <button id="playAgainBtn" style="display:none;">Play Again</button>
+  <div id="hint"></div>
+  <div id="feedback"></div>
+
+  <script src="script.js"></script>
+</body>
+</html>
