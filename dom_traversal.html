@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>DOM Traversal Interactive</title>
+  <style>
+    /* Header Styling */
+    header {
+      font-family: Arial, sans-serif;
+      margin-bottom: 20px;
+    }
+    /* Node Styles */
+    .grandparent {
+      background-color: #f9e79f;
+      padding: 10px;
+      margin: 10px auto;
+      width: fit-content;
+      border: 2px solid black;
+    }
+    .parent {
+      background-color: #aed6f1;
+      padding: 10px;
+      margin: 10px;
+    }
+    .child {
+      background-color: #f5b7b1;
+      padding: 10px;
+      margin: 5px;
+    }
+    .highlight {
+      border: 2px solid red;
+    }
+    button {
+      margin: 5px;
+      padding: 10px;
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <h2>DOM Traversal Interactive</h2>
+    <p><strong>Name:</strong> Stephanie Jane Cea</p>
+    <p><strong>Sex:</strong> Female</p>
+    <p><strong>Address:</strong> Matacla, Goa, Camarines Sur</p>
+    <p><strong>Course:</strong> BSIT-2</p>
+    <p><strong>School:</strong> Partido State University</p>
+    <p><strong>Semester/AY:</strong> 2nd Sem, AY 2024-2025</p>
+    <p><strong>Subject:</strong> PF2 - Event-Driven Programming</p>
+    <p><strong>Instructor:</strong> Mr. Arjay Abio</p>
+  </header>
+
+  <div id="grandparent" class="grandparent">Grandparent
+    <div class="parent">Parent 1
+      <div class="child">Child 1</div>
+      <div class="child">Child 2</div>
+    </div>
+    <div class="parent">Parent 2
+      <div class="child">Child 3</div>
+      <div class="child">Child 4</div>
+    </div>
+  </div>
+
+  <div>
+    <button onclick="traverseDown()">Traverse Down</button>
+    <button onclick="traverseUp()">Traverse Up</button>
+    <button onclick="traverseNextSibling()">Traverse Next Sibling</button>
+    <button onclick="traversePreviousSibling()">Traverse Previous Sibling</button>
+    <button onclick="addChild()">Add Child</button>
+    <button onclick="deleteCurrent()">Delete Current</button>
+  </div>
+
+  <script>
+    let selectedNode = null;
+
+    // Highlight clicked node
+    document.querySelectorAll('.grandparent, .parent, .child').forEach(el => {
+      el.addEventListener('click', e => {
+        e.stopPropagation();
+        if (selectedNode) selectedNode.classList.remove('highlight');
+        selectedNode = e.currentTarget;
+        selectedNode.classList.add('highlight');
+      });
+    });
+
+    function traverseDown() {
+      if (!selectedNode) return;
+      const child = selectedNode.querySelector(':scope > .parent, :scope > .child');
+      if (child) {
+        selectNode(child);
+      } else {
+        alert('No child to traverse down to.');
+      }
+    }
+
+    function traverseUp() {
+      if (!selectedNode) return;
+      const parent = selectedNode.parentElement.closest('.grandparent, .parent');
+      if (parent) {
+        selectNode(parent);
+      } else {
+        alert('No parent to traverse up to.');
+      }
+    }
+
+    function traverseNextSibling() {
+      if (!selectedNode) return;
+      let next = selectedNode.nextElementSibling;
+      while (next && !next.classList.contains(selectedNode.classList[0])) {
+        next = next.nextElementSibling;
+      }
+      if (next) {
+        selectNode(next);
+      } else {
+        alert('No next sibling.');
+      }
+    }
+
+    function traversePreviousSibling() {
+      if (!selectedNode) return;
+      let prev = selectedNode.previousElementSibling;
+      while (prev && !prev.classList.contains(selectedNode.classList[0])) {
+        prev = prev.previousElementSibling;
+      }
+      if (prev) {
+        selectNode(prev);
+      } else {
+        alert('No previous sibling.');
+      }
+    }
+
+    function addChild() {
+      if (!selectedNode) return;
+      if (selectedNode.classList.contains('grandparent')) {
+        const newParent = document.createElement('div');
+        newParent.className = 'parent';
+        newParent.textContent = 'New Parent';
+        for (let i = 1; i <= 2; i++) {
+          const child = document.createElement('div');
+          child.className = 'child';
+          child.textContent = `Child ${Math.floor(Math.random() * 100)}`;
+          child.addEventListener('click', selectOnClick);
+          newParent.appendChild(child);
+        }
+        newParent.addEventListener('click', selectOnClick);
+        selectedNode.appendChild(newParent);
+      } else if (selectedNode.classList.contains('parent')) {
+        const child = document.createElement('div');
+        child.className = 'child';
+        child.textContent = `Child ${Math.floor(Math.random() * 100)}`;
+        child.addEventListener('click', selectOnClick);
+        selectedNode.appendChild(child);
+      } else {
+        alert("Can't add child to a child node.");
+      }
+    }
+
+    function deleteCurrent() {
+      if (!selectedNode) return;
+      if (selectedNode.classList.contains('grandparent')) {
+        alert("Can't delete grandparent.");
+        return;
+      }
+      const parent = selectedNode.parentElement;
+      parent.removeChild(selectedNode);
+      selectedNode = null;
+    }
+
+    function selectNode(node) {
+      if (selectedNode) selectedNode.classList.remove('highlight');
+      selectedNode = node;
+      selectedNode.classList.add('highlight');
+    }
+
+    function selectOnClick(e) {
+      e.stopPropagation();
+      selectNode(e.currentTarget);
+    }
+  </script>
+
+</body>
+</html>
